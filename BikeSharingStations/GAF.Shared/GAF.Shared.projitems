@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{770B5AAB-BB71-41F1-BB4B-560C65BC97BB}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>GAF</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Chromosome.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\EvaluationException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operators\CustomObjectMutate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operators\BinaryMutate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operators\Copy.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operators\CopyMethod.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operators\CrossoverType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operators\Elite.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operators\Memory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operators\OperatorException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operators\RandomReplace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operators\SwapMutate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Gene.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GeneticAlgorithm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IGeneticOperator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InitialisationType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ParentSelectionType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Population.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\IList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\List.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Math\Math.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Threading\RandomProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ChromosomeException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\CrossoverTypeIncompatibleException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\GeneException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\GeneCloneException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\PopulationException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ChromosomeCorruptException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\PopulationSelectionException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\GeneTypeException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ChromosomeNotUniqueException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IConsumerFunctions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operators\EventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\SocketException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operators\ReplacementMethod.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoggingEventHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IFitness.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ChromosomeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operators\MutateBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operators\OperatorBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operators\CrossoverData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ChromosomeComparer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operators\CrossoverBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Operators\Crossover.cs" />
+  </ItemGroup>
+</Project>
