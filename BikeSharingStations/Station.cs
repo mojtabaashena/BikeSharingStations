@@ -66,5 +66,6 @@ namespace BikeSharingStations
     {
         public int AvailebleBikes { get; set; }
         public int Capasity { get; set; }
+        public double totalWeight { get; set; }
     }
 }

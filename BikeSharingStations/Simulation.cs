@@ -62,25 +62,53 @@ namespace BikeSharingStations
                     dtStationCells.ReadXmlSchema(StationLocating.strRootResaultPath + "stationsSchema.xml");
                     dtStationCells.ReadXml(StationLocating.strRootResaultPath + "stations.xml");
 
+                    double total1 = 0;
+
+                    foreach (System.Data.DataRow dr in dtStationCells.Rows)
+                    {
+                        double neareststationDistance;
+                        int neareststationindex = FindNearestStation(Convert.ToDouble(dr["Latitude"]), Convert.ToDouble(dr["Longitude"]), out neareststationDistance);
+                        StationList[neareststationindex].Weight += Convert.ToDouble(dr["Weight"]) * neareststationDistance;
+                        StationList[neareststationindex].totalWeight += Convert.ToDouble(dr["Weight"]);
+                        StationList[neareststationindex].RequestCount++;
+                    }
+
+                    foreach (System.Data.DataRow dr in dtStationCells.Rows)
+                    {
+                        double neareststationDistance;
+                        int neareststationindex = FindNearestStation(Convert.ToDouble(dr["Latitude"]), Convert.ToDouble(dr["Longitude"]), out neareststationDistance);
+                        StationList[neareststationindex].Weight += Convert.ToDouble(dr["Weight"]) * neareststationDistance;
+                        StationList[neareststationindex].totalWeight += Convert.ToDouble(dr["Weight"]);
+                        StationList[neareststationindex].RequestCount++;
+                    }
+
+                    foreach (var item in StationList)
+                    {
+                        item.Weight = item.Weight / item.totalWeight;
+                        Console.WriteLine(string.Format("Station Index : {0}  Weight : {1}  Request : {2}", item.Index, item.Weight , item.RequestCount));
+                        item.RequestCount = 0;
+                    }
+
+                    Console.WriteLine("--------------------------------------------------*");
+
+                    PrintStationStatus();
+
                     foreach (System.Data.DataRow dr in dtStationCells.Rows)
                     {
                         Troschuetz.Random.Distributions.Discrete.PoissonDistribution rnd = new Troschuetz.Random.Distributions.Discrete.PoissonDistribution();
                         rnd.Lambda = 100 - Convert.ToDouble(dr["Weight"]);
-
                         int t = 0;
                         while (t < 1440) // OneDay = 1440 minute
                         {
-                            t += rnd.Next();
+                            t += rnd.Next()*3;
                             FutureEventList.Add(new FutureEvent(EventID++, t, EventType.CustomerRequest, Convert.ToDouble(dr["Latitude"]), Convert.ToDouble(dr["Longitude"])));
                         }
+
                     }
 
-                    //foreach (FutureEvent fe in FutureEventList)
-                    //{
-                    //    StationList[fe.StationIndex].RequestCount++; 
-                    //}
+                  
 
-                    
+
 
                     //for (int GlobalTime = 0; GlobalTime < 1440; GlobalTime++)
                     //{
@@ -100,6 +128,8 @@ namespace BikeSharingStations
                         {
                             Random rndNextStation = new Random();
 
+                            #region CustomerRequest Event
+
                             if (fe.EventType == EventType.CustomerRequest)
                             {
                                 double NearestStationDistance = 0;// (km)
@@ -116,6 +146,11 @@ namespace BikeSharingStations
                                     FutureEventList.Add(ne);
                                 }
                             }
+
+                            #endregion
+
+                            #region BikeRentStart Event
+
                             else if (fe.EventType == EventType.BikeRentStart)
                             {
 
@@ -123,6 +158,7 @@ namespace BikeSharingStations
                                 if (StationList[fe.StationIndex].AvailebleBikes <= 0)
                                 {
                                     MissRequestCount++;
+                                    PrintStationStatus();
                                     continue;
                                 }
 
@@ -171,6 +207,11 @@ namespace BikeSharingStations
                                 }
 
                             }
+
+                            #endregion
+
+                            #region BikeRentFinish Event
+
                             else if (fe.EventType == EventType.BikeRentFinish)
                             {
 
@@ -187,6 +228,11 @@ namespace BikeSharingStations
                                 }
 
                             }
+
+                            #endregion
+
+                            #region Rebalancing Event
+
                             else if (fe.EventType == EventType.Rebalancing)
                             {
                                 //?? Reblancing To which stations should be done? one station or multiple station ?
@@ -231,14 +277,20 @@ namespace BikeSharingStations
                                     }
                                 }
                             }
+
+                            #endregion
+
                         }
 
-                        
+
                     }
+
                     foreach (var item in StationList)
                     {
                         Console.WriteLine(string.Format("Station Index : {0}  Weight : {1}  Request : {2}", item.Index, item.Weight, item.RequestCount));
                     }
+
+                    #region Export Resault
 
                     xlResaultDataSheet.Cells[1, 10] = "TotalDistanceOfUserWalk";
                     xlResaultDataSheet.Cells[1, 11] = "TotalDistanceOfBikeRides";
@@ -260,6 +312,9 @@ namespace BikeSharingStations
                     {
                         xlStationsDataSheet.Cells[10,item.Index +2] = item.RequestCount;  
                     }
+
+                    #endregion
+
                 }
 
                 xlWorkBook.SaveAs(StationLocating.strRootResaultPath + "StationsData3.xls");
@@ -272,6 +327,18 @@ namespace BikeSharingStations
             }
         }
 
+        private void PrintStationStatus()
+        {
+            int total = 0;
+            foreach (var item in StationList)
+            {
+                        Console.WriteLine(string.Format("Station Index : {0}  Available Bikes : {1}  Number Of Bikes Request : {2}", item.Index, item.AvailebleBikes, item.RequestCount));
+                total += item.AvailebleBikes;
+            }
+
+            Console.WriteLine("Total Available Bikes : " + total);
+            Console.WriteLine("-------------------------------------------------");
+        }
         private int FindNearestStation(double Latitude, double Longitude, out double NearestStationDistance)
         {
             double minimumDistance = -1;
@@ -379,8 +446,6 @@ namespace BikeSharingStations
         }
 
         #endregion
-
-       
 
     }
 }
