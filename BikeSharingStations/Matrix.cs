@@ -56,6 +56,12 @@ namespace BikeSharingStations
         public void FillMatrixWithEqalTotal()
         {
             FillMatrixWithRandomNumbers();
+            MakeEqualTotalInEachRow();
+        }
+
+        public void MakeEqualTotalInEachRow()
+        {
+
             for (int j = 0; j < Height; j++)
             {
                 double sumofeachrow = 0;
@@ -65,7 +71,7 @@ namespace BikeSharingStations
                 }
                 for (int k = 0; k < Width; k++)
                 {
-                    this[j, k] =  this[j, k] / sumofeachrow;
+                    this[j, k] = this[j, k] / sumofeachrow;
                 }
             }
         }

@@ -26,6 +26,7 @@ namespace BikeSharingStations
 
         List<Station> StationList = new List<Station>();
         Matrix MovementProbilityMatrix;
+        Matrix MovementCountMatrix;
 
         double TotalDistanceOfUserWalk;
         double TotalDistanceOfBikeRides;
@@ -100,7 +101,7 @@ namespace BikeSharingStations
                         int t = 0;
                         while (t < 1440) // OneDay = 1440 minute
                         {
-                            t += rnd.Next()*3;
+                            t += rnd.Next()*5;
                             FutureEventList.Add(new FutureEvent(EventID++, t, EventType.CustomerRequest, Convert.ToDouble(dr["Latitude"]), Convert.ToDouble(dr["Longitude"])));
                         }
 
@@ -187,6 +188,7 @@ namespace BikeSharingStations
                                     }
                                 }
 
+                                MovementCountMatrix[fe.StationIndex, NextStationIndex] += 1;
                                 FutureEvent ne = new FutureEvent();
                                 ne.EventType = EventType.BikeRentFinish;
 
@@ -313,6 +315,12 @@ namespace BikeSharingStations
                         xlStationsDataSheet.Cells[10,item.Index +2] = item.RequestCount;  
                     }
 
+                    Console.WriteLine("MovementProbilityMatrix : ------------------------------- " + RoundCount.ToString());
+                    MovementProbilityMatrix.PrintMatrix();
+                    Console.WriteLine("MovementCountMatrix : ------------------------------- " + RoundCount.ToString() );
+                    MovementCountMatrix.PrintMatrix();
+
+                    MovementCountMatrix.FillMatrixWithEqalTotal(); 
                     #endregion
 
                 }
